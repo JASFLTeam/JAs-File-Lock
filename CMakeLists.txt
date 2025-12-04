@@ -34,6 +34,7 @@ set(APP_SRCS
         ${MAIN_SRC}/task.h
         ${MAIN_SRC}/TaskRun.h
         ${MAIN_SRC}/tasks/Task_test.h
+        ${MAIN_SRC}/tasks/Encriptar7zip.h
         ${UTILS_SRC}/utils.h
         ${UTILS_SRC}/logging.h
         ${UTILS_SRC}/utils.cpp
@@ -68,7 +69,6 @@ if (WIN32)
         ${THIRDS_LIB_DIR}/win_x64/libcryptopp.lib
         ${THIRDS_LIB_DIR}/win_x64/libspdlog.lib
         ${THIRDS_LIB_DIR}/win_x64/libargon2.lib
-        ${THIRDS_LIB_DIR}/win_x64/libsqlite3-0.dll
     )
     target_compile_definitions(${APP} PRIVATE OS_WIN)  
 elseif (LINUX)
@@ -76,7 +76,6 @@ elseif (LINUX)
         ${THIRDS_LIB_DIR}/linux_x64/libcryptopp.a
         ${THIRDS_LIB_DIR}/linux_x64/libspdlog.a
         ${THIRDS_LIB_DIR}/linux_x64/libargon2.a
-        ${THIRDS_LIB_DIR}/linux_x64/libsqlite3.so
     )
     target_compile_definitions(${APP} PRIVATE OS_LINUX)
 endif()

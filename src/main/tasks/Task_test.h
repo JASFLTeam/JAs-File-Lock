@@ -1,5 +1,5 @@
 #include <task.h>
-#include <crypt/argon_wrapper.h>
+#include <../crypt/argon_wrapper.h>
 #include <logging.h>
 
 namespace task {
@@ -13,6 +13,9 @@ namespace task {
                 resul_task& result,
                 datos_task& salida) override {
 
+                //Temp
+                CryptoPP::SecByteBlock p;
+
                 ut::argon2 argon_algoritmo;
                 /*
                 * Importante realizar acciones que podrían fallar adentro
@@ -23,16 +26,16 @@ namespace task {
                     /*                   NOTA: Es obligatorio usar estas mismas interfaces, para devolver y recibir
                     * Dato de entrada
                     */
-                    const CryptoPP::SecByteBlock& clave = std::get<CryptoPP::SecByteBlock>(datos_inicial);
+                    const CryptoPP::SecByteBlock& clave = std::get<CryptoPP::SecByteBlock>(datos_inicial.resul_dt);
                     /*
                     * Dato de salida
                     */
-                    const CryptoPP::SecByteBlock& _salida = std::get<CryptoPP::SecByteBlock>(salida);
+                    CryptoPP::SecByteBlock& _salida = std::get<CryptoPP::SecByteBlock>(salida.resul_dt);
 
                     /*
                     * Lógica de gestión
                     */
-                    int resultado = argon_algoritmo.hash_2id(clave, _salida);
+                    int resultado = argon_algoritmo.hash_2id(clave, _salida, p);
                     if (resultado == ARGON2_OK) {
                         ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"Hash generado exitosamente",INFO);
                         /*

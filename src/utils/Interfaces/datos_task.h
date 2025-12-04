@@ -19,6 +19,7 @@ using reu_var = std::variant <
 struct datos_task{
 
     reu_var resul_dt;
+    std::optional<CryptoPP::SecByteBlock> clave;
     std::optional<int> pro;
 
 }; 

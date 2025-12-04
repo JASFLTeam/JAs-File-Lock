@@ -15,12 +15,11 @@ namespace ut {
             * Constantes preestablecidos
             * memoria = 64mb
             * tipo = argon2id
-            * iteracion = 2
+            * iteracion = 3
             */
-            const argon2_type argon_tipo = Argon2_id;
             const size_t hash_lg = 32;
             const size_t salt_lg = 16;
-            const uint32_t iteracion = 2;
+            const uint32_t iteracion = 3;
             const uint32_t mem_costo = 65536;
             const uint32_t hilo = 2;
 
@@ -30,7 +29,7 @@ namespace ut {
             /*
             * genera un hash codificado tomando una clave, devolviendo un tipo SecByteBlock con el hash
             */
-            int hash_2id(CryptoPP::SecByteBlock& clave, CryptoPP::SecByteBlock& salida);
+            int hash_2id(const CryptoPP::SecByteBlock& clave, CryptoPP::SecByteBlock& salida, CryptoPP::SecByteBlock& _salt);
     };
 }
 

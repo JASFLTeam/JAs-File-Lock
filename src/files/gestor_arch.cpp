@@ -75,3 +75,59 @@ bool gestor_arch::eliminar_seguro(const std::string ruta) {
         return false;
     }
 }
+
+/*
+* Escribe Bytes al final del archivo
+*/
+int gestor_arch::escribir_final(const std::string ruta, const CryptoPP::SecByteBlock& bytes) {
+    try {
+        /*
+        * Se carga para ser escrito
+        */
+        std::ofstream archivo(ruta.c_str(), std::ios::binary | std::ios::app);
+
+        if (!archivo.is_open()) {
+            return -2;
+        }
+        else {
+            archivo.write(reinterpret_cast<const char*>(bytes.data()),bytes.size());
+            archivo.close();
+
+            return 1;
+            }
+    }
+    catch (const std::exception& err) {
+        return -1;
+    }
+}
+
+/*
+* Lee los últimos N bytes
+*/
+int gestor_arch::leer_final(const std::string ruta, CryptoPP::SecByteBlock& salida, const unsigned long tam) {
+    try {
+        /*
+        * Se carga para ser leido
+        */
+        std::ifstream archivo(ruta.c_str(), std::ios::binary | std::ios::app);
+
+        if (!archivo.is_open()) {
+            return -2;
+        }
+        else {
+            archivo.seekg(-static_cast<std::streamoff>(tam), std::ios::end);
+
+            /*
+            * Lectura y carga hacia el bloque seguro
+            */
+            archivo.read(reinterpret_cast<char*>(salida.data()), salida.size());
+
+            archivo.close();
+
+            return 1;
+        }
+    }
+    catch (const std::exception& err) {
+        return -1;
+    }
+}

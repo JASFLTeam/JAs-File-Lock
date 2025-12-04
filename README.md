@@ -1,4 +1,4 @@
 # Pentaloon
-Projecto de bóveda de archivos open source
+Proyecto de un Filelock
 
 compatibilidad solo con gcc/g++
