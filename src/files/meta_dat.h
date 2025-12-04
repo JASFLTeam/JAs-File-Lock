@@ -8,8 +8,12 @@
 struct meta_dat {
     bool existe;
     std::string ruta_arch;
+    std::string nombre_arch;
+    std::string ext_arch;
     long long tam_bytes;
     std::string fech_crea;
 };
+
+Q_DECLARE_METATYPE(meta_dat);
 
 #endif

@@ -20,6 +20,7 @@ struct datos_task{
 
     reu_var resul_dt;
     std::optional<CryptoPP::SecByteBlock> clave;
+    std::string path;
     std::optional<int> pro;
 
 }; 

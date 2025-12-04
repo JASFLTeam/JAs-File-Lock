@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/basic">
+        <file>icons/trash-icon.svg</file>
+        <file>icons/key-icon.svg</file>
+        <file>icons/page-file-icon.svg</file>
+        <file>icons/round-information-blue-icon.svg</file>
+        <file>icons/risk-icon.svg</file>
+        <file>icons/red-x-icon.svg</file>
+    </qresource>
+</RCC>

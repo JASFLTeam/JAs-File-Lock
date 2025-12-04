@@ -32,9 +32,15 @@ set(APP_SRCS
         ${MAIN_SRC}/app.h
         ${MAIN_SRC}/GestorTask.h
         ${MAIN_SRC}/task.h
+        ${MAIN_SRC}/task.cpp
         ${MAIN_SRC}/TaskRun.h
-        ${MAIN_SRC}/tasks/Task_test.h
-        ${MAIN_SRC}/tasks/Encriptar7zip.h
+        ${MAIN_SRC}/tasks/UsarArgon.h
+        ${MAIN_SRC}/tasks/UsarArgon.cpp
+        ${MAIN_SRC}/tasks/Usar7zip.h
+        ${MAIN_SRC}/tasks/tasksLoad.h
+        ${MAIN_SRC}/proc_signal.h
+        ${MAIN_SRC}/proc_signal.cpp
+
         ${UTILS_SRC}/utils.h
         ${UTILS_SRC}/logging.h
         ${UTILS_SRC}/utils.cpp
@@ -43,12 +49,24 @@ set(APP_SRCS
         ${FILES_SRC}/meta_dat.h
         ${CRYPT_SRC}/argon_wrapper.h
         ${CRYPT_SRC}/argon_wrapper.cpp
-        ${CMAKE_SOURCE_DIR}/ui/app.ui
         ${LANG_FILES}
+
+        # Dialogs
+        ${MAIN_SRC}/dialogs/confirm.h
+        ${MAIN_SRC}/dialogs/confirm.cpp
+        ${MAIN_SRC}/dialogs/psswrd.h
+        ${MAIN_SRC}/dialogs/psswrd.cpp
+
+        # UI
+        ui/dialogs/confirm.ui
+        ${CMAKE_SOURCE_DIR}/ui/app.ui
+        ui/dialogs/psswrd.ui
+        ui/icons.qrc
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${APP}
+        WIN32
         MANUAL_FINALIZATION
         ${APP_SRCS}
     )
@@ -85,6 +103,7 @@ target_link_libraries(${APP} PRIVATE supc++)
 
 set_property(TARGET ${APP} PROPERTY AUTOUIC_SEARCH_PATHS 
     "${CMAKE_SOURCE_DIR}/ui"
+    "${CMAKE_SOURCE_DIR}/ui/dialogs"
 )
 
 target_include_directories(${APP} PUBLIC
