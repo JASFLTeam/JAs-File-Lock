@@ -5,7 +5,7 @@
 
 struct resul_task{
 
-    bool exito;
+    bool exito; //false indica error fatal
 
     std::optional<int> codi_erro;
 
@@ -13,5 +13,9 @@ struct resul_task{
 
 };
 
+/*
+* Habilita que qt lo reconozca como meta-type
+*/
+Q_DECLARE_METATYPE(resul_task)
 
 #endif 

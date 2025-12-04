@@ -2,6 +2,7 @@
 
 #include "utils.h"
 #include "logging.h"
+#include <GestorTask.h>
 
 #include <QApplication>
 #include <QLocale>
@@ -19,9 +20,14 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     /*
+    * Habilitar registro de resul_task y datos_task como meta-tipo de Qt
+    */
+    qRegisterMetaType<resul_task>("resul_task"); //el string es el nombre que vamos a usar para referenciar
+    qRegisterMetaType<datos_task>("datos_task");
+    /*
     * Test de logging
     */
-    ut::Logger::Instancia().registrar(OS,INFO);
+    ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,OS,INFO);
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();

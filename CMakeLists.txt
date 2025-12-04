@@ -12,6 +12,7 @@ set(CMAKE_AUTORCC ON)
 set(MAIN_SRC "src/main")
 set(UTILS_SRC "src/utils")
 set(CRYPT_SRC "src/crypt")
+set(FILES_SRC "src/files")
 
 # direcciones de third party
 set(THIRDS_LIB_DIR "${CMAKE_SOURCE_DIR}/thirdparty/lib")
@@ -29,9 +30,16 @@ set(APP_SRCS
         ${MAIN_SRC}/main.cpp
         ${MAIN_SRC}/app.cpp
         ${MAIN_SRC}/app.h
+        ${MAIN_SRC}/GestorTask.h
+        ${MAIN_SRC}/task.h
+        ${MAIN_SRC}/TaskRun.h
+        ${MAIN_SRC}/tasks/Task_test.h
         ${UTILS_SRC}/utils.h
         ${UTILS_SRC}/logging.h
         ${UTILS_SRC}/utils.cpp
+        ${FILES_SRC}/gestor_arch.h
+        ${FILES_SRC}/gestor_arch.cpp
+        ${FILES_SRC}/meta_dat.h
         ${CRYPT_SRC}/argon_wrapper.h
         ${CRYPT_SRC}/argon_wrapper.cpp
         ${CMAKE_SOURCE_DIR}/ui/app.ui
@@ -47,7 +55,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 endif()
 
 # Establece el Build a Debug si no se especifica
-if (NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "Debug")
     message("-Build: Debug")
     set(CMAKE_BUILD_TYPE Debug)
     target_compile_definitions(${APP} PRIVATE DEBUG_ON)
@@ -87,6 +95,7 @@ target_include_directories(${APP} PUBLIC
     ${CMAKE_SOURCE_DIR}/${MAIN_SRC}
     ${CMAKE_SOURCE_DIR}/${CRYPT_SRC}
     ${CMAKE_SOURCE_DIR}/${UTILS_SRC}
+    ${CMAKE_SOURCE_DIR}/${FILES_SRC}
 )
 
 include(GNUInstallDirs)

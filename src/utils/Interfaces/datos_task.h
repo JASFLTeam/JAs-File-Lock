@@ -3,12 +3,14 @@
 #include <string>
 #include <vector>
 #include <variant>
+#include <cryptopp/secblock.h>
 #include <optional>
 
 using reu_var = std::variant <
 
     bool,
     std::string,
+    CryptoPP::SecByteBlock,
     std::vector<std::string>,
     std::monostate
 
@@ -21,6 +23,10 @@ struct datos_task{
 
 }; 
 
+/*
+* Habilita que qt lo reconozca como meta-type
+*/
+Q_DECLARE_METATYPE(datos_task)
 
 #endif 
 
