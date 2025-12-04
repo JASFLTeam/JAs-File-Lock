@@ -9,6 +9,7 @@
 #include <cryptopp/secblock.h>
 #include "dialogs/confirm.h"
 #include <gestor_arch.h>
+#include <argon_wrapper.h>
 #include <memory>
 
 class Proc_signal : public QObject
@@ -20,7 +21,7 @@ public:
 
 private:
     ut::GestorTarea gestorTar;
-    gestor_arch gestor_arch;
+    gestor_arch GestorArch;
     datos_task datos;
     resul_task resultado;
 
@@ -34,6 +35,10 @@ signals:
 
     void done();
 
+    void disc_7zip();
+
+    void disc_get_clave();
+
     void exitoso(const datos_task& dat);
 
 public slots:
@@ -41,6 +46,8 @@ public slots:
     * Obtención y derivación de clave
     */
     void get_clave(const QString& clave);
+
+    void bytes_to_clave(const QString& clave, const meta_dat& data);
 
     void llamar_7zip(const datos_task& dat);
 

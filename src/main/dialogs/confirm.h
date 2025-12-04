@@ -6,7 +6,8 @@
 enum out_tipo {
     _ERROR,
     _INFO,
-    ALERT
+    ALERT,
+    APP
 };
 
 namespace Ui {

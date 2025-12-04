@@ -1,4 +1,5 @@
-# Pentaloon
-Proyecto de un Filelock
+JA's File Lock
 
-compatibilidad solo con gcc/g++
+Es un programa que simplifica y fortalece el guardado de dato mediante algoritmo 
+de derivación de clave. Ofreciendo la seguridad de una contraseña fuerte sin gestionar
+largas cadenas complicadas de recordar.

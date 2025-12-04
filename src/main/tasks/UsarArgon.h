@@ -35,10 +35,14 @@ namespace task {
                     salida.resul_dt = CryptoPP::SecByteBlock(32);
                     CryptoPP::SecByteBlock& _salida = std::get<CryptoPP::SecByteBlock>(salida.resul_dt);
 
+                    if (datos_inicial.pro == HASH) {
+                        p = datos_inicial.sec_c;
+                    }
+
                     /*
                     * Lógica de gestión
                     */
-                    int resultado = argon_algoritmo.hash_2id(clave, _salida, p);
+                    int resultado = argon_algoritmo.hash_2id(clave, _salida, p, (argon_op)*datos_inicial.pro);
                     if (resultado == ARGON2_OK) {
                         ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"Hash generado exitosamente",INFO);
                         /*
@@ -49,6 +53,7 @@ namespace task {
                     }
                     else {
                         ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"Hash generado, pero con problema",ERR);
+                        ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,std::to_string(resultado),ERR);
                         result.exito = false;
                         result.codi_erro = resultado;
                     }

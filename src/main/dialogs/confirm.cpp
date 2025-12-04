@@ -41,6 +41,13 @@ void confirm::confg(const QString& dato, const out_tipo& out,
         ui->ico->setPixmap(QPixmap(":/basic/icons/round-information-blue-icon.svg").scaled(24, 24,
             Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
+    else if (out == APP) {
+        ui->buttonBox->setCenterButtons(true);
+
+        ui->buttonBox->button(QDialogButtonBox::Cancel)->hide();
+        ui->ico->setPixmap(QPixmap(":/basic/icons/app.svg").scaled(64, 64,
+            Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
     ui->label->setText(dato);
 
     //los botones

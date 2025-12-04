@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # nombre de la app
-set(APP "app")
+set(APP "jasflk")
 
 project(${APP} VERSION 1.0)
 
@@ -62,13 +62,22 @@ set(APP_SRCS
         ${CMAKE_SOURCE_DIR}/ui/app.ui
         ui/dialogs/psswrd.ui
         ui/icons.qrc
+
 )
+
+# App icon for exe
+if (WIN32)
+    set(ICON ui/icons/app_icon/app.rc)
+else ()
+    set(ICON)
+endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${APP}
         WIN32
         MANUAL_FINALIZATION
         ${APP_SRCS}
+        ${ICON}
     )
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${LANG_FILES})
 endif()

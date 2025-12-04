@@ -6,5 +6,10 @@
         <file>icons/round-information-blue-icon.svg</file>
         <file>icons/risk-icon.svg</file>
         <file>icons/red-x-icon.svg</file>
+        <file>icons/app.svg</file>
+        <file>icons/file_128px.svg</file>
+        <file>icons/lock_file_128px.svg</file>
+        <file>icons/eye-icon.svg</file>
+        <file>icons/qt_94938.svg</file>
     </qresource>
 </RCC>

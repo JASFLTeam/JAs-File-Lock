@@ -14,11 +14,22 @@ psswrd::~psswrd()
 }
 
 //crear ventana para obtener contraseña
-void psswrd::confg(const QString& primer_boton, const QString& segundo_boton) {
+void psswrd::confg(const QString& primer_boton, const QString& segundo_boton, const meta_dat& dat) {
+
+    size_t long_t = dat.ruta_arch.size();
+    std::string temp_r = dat.ruta_arch;
+    ruta = QString::fromStdString(temp_r.erase(long_t-dat.nombre_arch.size(),dat.nombre_arch.size()));
+    ui->url->setText(ruta);
+
     auto primer = ui->buttonBox->button(QDialogButtonBox::Ok);
     primer->setText(primer_boton);
     auto segundo = ui->buttonBox->button(QDialogButtonBox::Cancel);
     segundo->setText(segundo_boton);
+
+}
+
+void psswrd::actualizar() {
+    ui->url->setText(ruta);
 }
 
 void psswrd::on_clave_textEdited(const QString &arg1)
@@ -58,5 +69,16 @@ void psswrd::on_clave_textEdited(const QString &arg1)
 void psswrd::on_buttonBox_accepted()
 {
     emit out_password(ui->clave->text());
+}
+
+
+void psswrd::on_ver_contra_toggled(bool checked)
+{
+    if (checked) {
+        ui->clave->setEchoMode(QLineEdit::Normal);
+    }
+    else if (!checked) {
+        ui->clave->setEchoMode(QLineEdit::Password);
+    }
 }
 

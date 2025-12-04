@@ -7,6 +7,12 @@
 #include <cryptopp/osrng.h>
 #include <cryptopp/drbg.h>
 #include <cryptopp/argnames.h>
+#include <logging.h>
+
+enum argon_op {
+    RANDHASH,
+    HASH
+};
 
 namespace ut {
     class argon2 {
@@ -29,7 +35,8 @@ namespace ut {
             /*
             * genera un hash codificado tomando una clave, devolviendo un tipo SecByteBlock con el hash
             */
-            int hash_2id(const CryptoPP::SecByteBlock& clave, CryptoPP::SecByteBlock& salida, CryptoPP::SecByteBlock& _salt);
+            int hash_2id(const CryptoPP::SecByteBlock& clave,
+                CryptoPP::SecByteBlock& salida, CryptoPP::SecByteBlock& _salt, const argon_op& op);
     };
 }
 

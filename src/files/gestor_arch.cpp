@@ -194,15 +194,17 @@ void Archivo::guardar_arch(const meta_dat& dato) {
 }
 void Archivo::Abrir(const QString& url) {
     limpiar();
-    ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,url.toStdString().append(" Intentando abrir"),INFO);
-    archivo = gestor.get_archivo(url.toStdString().erase(0,1));
-    if (archivo.existe) {
-        ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,url.toStdString().append(" Abierto"),INFO);
+    if (!url.isEmpty()) {
+        ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,url.toStdString().append(" Intentando abrir"),INFO);
+        archivo = gestor.get_archivo(url.toStdString().erase(0,1));
+        if (archivo.existe) {
+            ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,url.toStdString().append(" Abierto"),INFO);
+            emit salida(archivo);
+        }
+        else {
+            ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,url.toStdString().append(" No se pudo abrir"),INFO);
+        }
     }
-    else {
-        ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,url.toStdString().append(" No se pudo abrir"),INFO);
-    }
-    emit salida(archivo);
 }
 void Archivo::Cerrar() {
     limpiar();
@@ -218,7 +220,7 @@ void Archivo::Borrar_s() {
         emit crearMsg("No existe ningún fichero","Error",_ERROR,"Ok","");
     }
     else if (archivo.tam_bytes > 1000000000LL) {
-        emit crearMsg("Archivo demasiado grande","Error",_ERROR,"Ok","");
+        emit crearMsg("Máximo 900mb","Error",_ERROR,"Ok","");
         ut::Logger::Instancia().registrar(__FILE__,__LINE__,__FUNCTION__,std::to_string(archivo.tam_bytes),INFO);
     }
     else if (!es_vacio() && archivo.tam_bytes < 1000000000LL) {

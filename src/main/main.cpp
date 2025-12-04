@@ -53,6 +53,12 @@ int main(int argc, char *argv[])
     app w;
 
     /*
+    * Preconfiguraciones
+    */
+    w.setWindowIcon(QIcon(QPixmap(":/basic/icons/app.svg"))); //icono del app
+    w.setWindowTitle("JA's File Lock");
+
+    /*
     * Conexiones
     */
     QObject::connect(&w, &app::Opened_file, &Active_archivo, &Archivo::Abrir);

@@ -3,23 +3,30 @@
 /*
 * genera un hash codificado tomando una clave
 */
-int ut::argon2::hash_2id(const CryptoPP::SecByteBlock& clave, CryptoPP::SecByteBlock& salida, CryptoPP::SecByteBlock& _salt) {
+int ut::argon2::hash_2id(const CryptoPP::SecByteBlock& clave,
+        CryptoPP::SecByteBlock& salida, CryptoPP::SecByteBlock& _salt, const argon_op& op) {
 
-    /*
-    * Fuente de entropía para generar el salt
-    * Y generación de salt 16 bytes
-    */
-    CryptoPP::AutoSeededRandomPool entropia;
-    /*
-    * Contenedor del hash resultante
-    */
     CryptoPP::SecByteBlock salt(salt_lg);
-    entropia.GenerateBlock(salt, salt_lg);
 
-    /*
-    * Retorna el salt usado
-    */
-    _salt = salt;
+    if (op == RANDHASH) {
+        /*
+        * Fuente de entropía para generar el salt
+        * Y generación de salt 16 bytes
+        */
+        CryptoPP::AutoSeededRandomPool entropia;
+        /*
+        * Contenedor del hash resultante
+        */
+        entropia.GenerateBlock(salt, salt_lg);
+
+        /*
+        * Retorna el salt usado
+        */
+        _salt = salt;
+    }
+    else {
+        salt = _salt;
+    }
 
     CryptoPP::SecByteBlock derivada(hash_lg);
     /*

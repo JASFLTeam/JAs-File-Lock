@@ -21,6 +21,7 @@ namespace task {
             /*
             * Usado para terminar
             */
+            int escritura = 0;
             int exit_code = 0;
             void ejecutar(const datos_task& datos_inicial,
                 resul_task& result,
@@ -54,38 +55,61 @@ namespace task {
                 QString nombre = dato.nombre_arch.c_str();
 
                 QString out_path = datos_inicial.path.c_str();
-                QString out_param = "-o";
-
-                out_param.append(out_path).append(QString(".lock"));
 
                 QString archivo = QString::fromStdString(path);
 
+                QByteArray clave(reinterpret_cast<const char*>(datos_inicial.clave->data()),
+                    datos_inicial.clave->size());
+
+                //Transformar a base64
+                QByteArray _clave = clave.toBase64();
+
+                QString param_clave = "-p" + _clave;
+
+                QString out = "-o";
+
                 if (datos_inicial.pro == ENCRYPT) {
-                    params << "a" << "-mhe=on" << nombre << out_param << archivo << "-mx0" << "-p"; //Nota: -p es para ingresar contraseña
+
+                    out_path.append(QString(".lock"));
+
+                    ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,std::string("Encriptar: ")+archivo.toStdString(),INFO);
+                    ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,std::string("Salida: ")+out_path.toStdString(),INFO);
+                    params << "a" << "-mhe=on" << out_path << archivo << "-mx0" << param_clave; //Nota: -p es para ingresar contraseña
                 }
                 else if (datos_inicial.pro == DECRYPT) {
-                    params << "e" << nombre << out_param << "-p";
+
+                    QString _out = QString::fromStdString(out_path.toStdString().erase((out_path.size()-nombre.size()),nombre.size()));
+                    out = out + _out;
+
+                    ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,std::string("Entrada: ")+out_path.toStdString(),INFO);
+                    ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,std::string("Salida: ")+_out.toStdString(),INFO);
+
+                    params << "e" << out_path << out << param_clave;
                 }
 
                 connect(proceso.get(), &QProcess::finished, this, &Usar7zip::fin);
 
                 proceso->start(ejecutable,params);
 
+                //limpiezas
+                _clave.clear();
+                param_clave.clear();
+                clave.clear();
+
                 /*
                 * Ingreso de contraseña por stdin (como usando por consola)
                 */
                 if (proceso->waitForStarted(5000)) { // Espera por 5 segundo para que se inicie
-                    QByteArray clave(reinterpret_cast<const char*>(datos_inicial.clave->data()),
-                        datos_inicial.clave->size());
 
-                    proceso->write(clave);
-                    proceso->write("\n");
+                    proceso->waitForReadyRead(500);
+
+                    //Remplaza si existe un archivo igual
+                    proceso->write("y");
 
                     /*
-                    * Cierra la entrada y limpia el QByteArray clave
+                    * Cierra la entrada
                     */
                     proceso->closeWriteChannel();
-                    clave.clear();
                 }
                 else {
                     ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"No se inicializó 7zip como es debido",ERR);
@@ -103,18 +127,33 @@ namespace task {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
                 if (exit_code == 0) {
-                    result.exito = true;
                     ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"Operacion con 7zip exitoso",INFO);
+                    //escritura del salt al final
+                    if (datos_inicial.pro == ENCRYPT) {
+                        escritura = gestor.escribir_final(out_path.toStdString(), datos_inicial.sec_c);
+                        if (proceso) {
+                            result.exito = true;
+                            ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"Salt almacenado en el fichero",INFO);
+                        }
+                        else {
+                            result.exito = false;
+                            ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"No se pudo almacenar el salt en el fichero",INFO);
+                        }
+                    }
+                    else if (datos_inicial.pro == DECRYPT) {
+                        result.exito = true;
+                    }
                 }
                 else {
                     ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,"Error de 7zip",ERR);
                     result.codi_erro = exit_code;
-                    result.mens_erro = "Error con 7zip";
+                    result.mens_erro = "Error de 7zip o contraseña erronea";
                 }
             }
 
         private slots:
             void fin(int code, QProcess::ExitStatus estado) {
+                ut::Logger::Instancia().registrar(__FILE__, __LINE__,__FUNCTION__,std::string("Código de salida 7zip: ")+std::to_string(code),INFO);
                 exit_code = code;
             }
     };

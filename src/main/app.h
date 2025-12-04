@@ -28,7 +28,6 @@ public:
 private slots:
     void on_actionOpen_triggered();
     void on_actionClose_triggered();
-    void on_actionabout_Pentaloon_triggered();
     void on_actionabout_third_parties_triggered();
 
     void on_encriptar_clicked();
@@ -42,6 +41,10 @@ public slots:
     void borrar_arch();
     void llamar_7zip(const datos_task& dato);
     void setArchivo(const meta_dat& datos);
+    void recuperar_clave(const QString& clave);
+
+    //Desconectores
+    void disc_7zip();
 
 signals:
     void Opened_file(const QString& url);
@@ -53,7 +56,10 @@ signals:
 
     void run_7zip(const datos_task& dato);
 
+    void run_recu(const QString& clave, const meta_dat& dato);
+
 private:
+    crypto_op operacion;
     meta_dat copia;
     Proc_signal proc;
     Ui::app *ui;
